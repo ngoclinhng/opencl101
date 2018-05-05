@@ -2,15 +2,16 @@ INCLUDE_DIR = ../include
 HEADER = ../include/opencl101.h
 UTILS = ../common/utils.c
 
-CC=gcc
-CFLAGS=-std=c99 -Wall -pedantic -g3 -I$(INCLUDE_DIR)
-OS := $(shell uname)
-OPTIONS:=
+OS := $(shell uname -s)
 
 ifeq ($(OS), Darwin)
-	OPTIONS += -framework OpenCL
+    CC := clang
+    CFLAGS := -Os -Wall -arch x86_64 -I$(INCLUDE_DIR)
+    OPTIONS := -framework OpenCL
 else
-	OPTIONS += -l OpenCL
+    CC := gcc
+    CFLAGS := -std=c99 -Wall -pedantic -g3 -I$(INCLUDE_DIR)
+    OPTIONS := -l OpenCL
 endif
 
 all: main
